@@ -1,0 +1,9 @@
+(define (deal) (add1 (randint 10)))
+
+(define (new-hand) (list (deal)))
+
+(define (up-card hand) (car hand))
+
+(define (add-card hand card) (++ hand card))
+
+(define (total hand) (reduce + hand))

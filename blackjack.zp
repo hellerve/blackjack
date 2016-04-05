@@ -1,0 +1,46 @@
+(load "hand.zp")
+
+(define (stupid-strategy hand opponent-up-card)
+  (> opponent-up-card 5))
+
+(define test-strategy
+  (case-lambda
+    ((player-strategy house-strategy)
+       (test-strategy player-strategy house-strategy 100))
+    ((player-strategy house-strategy n)
+       (reduce (lambda (acc _)
+                  (if (= (play-game player-strategy house-strategy) 0)
+                    (cons (add1 (car acc)) (cdr acc))
+                    (list (car acc) (add1 (cadr acc)))))
+               [0 0] (range n)))))
+
+(define (stop-at-17 hand opponent-up-card) [])
+
+(define (stop-at n)
+  "Returns a strategy that twists until the total is n"
+  [])
+
+(define (watched strategy)
+  '())
+
+(define (smart-strategy hand opponent-up-card)
+  '())
+
+(define (play-hand strategy hand opponent-up-card)
+  (cond
+    ((> (total hand) 21) hand)
+    ((strategy hand opponent-up-card) 
+        (play-hand strategy (add-card hand (deal)) opponent-up-card))
+    (else hand)))
+
+(define (play-game player-strategy house-strategy)
+  (let* ((house-initial-hand (new-hand))
+         (player-hand (play-hand player-strategy (new-hand) (up-card house-initial-hand))))
+    (if (> (total player-hand) 21)
+      0
+      (let ((house-hand (play-hand house-strategy
+                                   house-initial-hand
+                                   (up-card player-hand))))
+        (cond ((> (total house-hand) 21) 1)
+              ((> (total player-hand) (total house-hand)) 1)
+              (else 0))))))
