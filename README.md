@@ -8,7 +8,7 @@ Let's play blackjack in zepto. Translation of
 ```clojure
 (load "blackjack")
 (play-game stupid-strategy stupid-strategy)
-(test-strategy stupid-strategy stupid-strategy) ; => returns signifying who won how many games
+(test-strategy stupid-strategy stupid-strategy) ; => returns percentage of games won by player
 ```
 
 <hr/>

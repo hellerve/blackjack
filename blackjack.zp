@@ -8,17 +8,16 @@
     ((player-strategy house-strategy)
        (test-strategy player-strategy house-strategy 100))
     ((player-strategy house-strategy n)
-       (reduce (lambda (acc _)
-                  (if (= (play-game player-strategy house-strategy) 0)
-                    (cons (add1 (car acc)) (cdr acc))
-                    (list (car acc) (add1 (cadr acc)))))
-               [0 0] (range n)))))
+       (/. (reduce (lambda (acc _) (+ acc (play-game player-strategy house-strategy)))
+               0 (range n))
+           n))))
 
-(define (stop-at-17 hand opponent-up-card) [])
+(define (stop-at-17 hand opponent-up-card)
+  (> 17 (apply sum hand)))
 
 (define (stop-at n)
   "Returns a strategy that twists until the total is n"
-  [])
+  (lambda (hand opponent-up-car) (> n (apply sum hand))))
 
 (define (watched strategy)
   '())
